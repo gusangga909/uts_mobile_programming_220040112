@@ -1,53 +1,50 @@
+import 'dart:io';  // Import yang diperlukan
 import 'package:flutter/material.dart';
-import 'tambah_hewan.dart'; // Pastikan add_animal.dart digunakan di sini
-import 'hewan.dart';
+import 'hewan.dart';  // Pastikan mengimpor model Hewan yang sudah ada
 
-class AnimalListPage extends StatelessWidget {
-  final List<Animal> animals;
-  final Function(Animal) onAddAnimal;
+class DaftarHewanPage extends StatelessWidget {
+  final List<Hewan> daftarHewan;
 
-  AnimalListPage({required this.animals, required this.onAddAnimal});
+  DaftarHewanPage({required this.daftarHewan});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Daftar Hewan'),
+        backgroundColor: Colors.green,
       ),
       body: ListView.builder(
-        itemCount: animals.length,
+        itemCount: daftarHewan.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(animals[index].name),
-            subtitle: Text(animals[index].scientificName),
-            onTap: () {
-              // Ini adalah tempat untuk membuka AddAnimalPage jika ingin menambah atau mengedit data
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddAnimalPage(
-                    onAddAnimal: onAddAnimal,
-                    animalToEdit: animals[index], // Jika ingin mengedit
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Menambahkan hewan baru
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AddAnimalPage(
-                onAddAnimal: onAddAnimal,
+          final hewan = daftarHewan[index];
+          return Card(
+            margin: EdgeInsets.all(8.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: ListTile(
+              contentPadding: EdgeInsets.all(12),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: hewan.image.isEmpty
+                    ? Icon(Icons.image, size: 40, color: Colors.grey) // Menampilkan ikon jika gambar kosong
+                    : Image.file(
+                        File(hewan.image),  // Menggunakan File dengan benar
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                      ),
               ),
+              title: Text(hewan.nama, style: TextStyle(fontSize: 18)),
+              subtitle: Text(hewan.namaIlmiah),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                // Navigasi ke halaman detail atau edit
+              },
             ),
           );
         },
-        child: Icon(Icons.add),
       ),
     );
   }

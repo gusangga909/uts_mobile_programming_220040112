@@ -1,13 +1,13 @@
-class Animal {
-  final String name;
-  final String scientificName;
-  final String description;
+class Hewan {
+  final String nama;
+  final String namaIlmiah;
+  final String deskripsi;
   final String image;
 
-  Animal({
-    required this.name,
-    required this.scientificName,
-    required this.description,
+  Hewan({
+    required this.nama,
+    required this.namaIlmiah,
+    required this.deskripsi,
     required this.image,
   });
 }

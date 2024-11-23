@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'hewan.dart';
-import 'tambah_hewan.dart'; 
+import 'tambah_hewan.dart';  // Import halaman tambah hewan
+import 'daftar_hewan.dart';  // Import halaman daftar hewan
+import 'hewan.dart';  // Import model Hewan
 
 void main() {
   runApp(MyApp());
@@ -10,38 +11,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Animal List',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: AnimalListPage(),
+      title: 'Aplikasi Hewan',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: HomePage(),
     );
   }
 }
 
-class AnimalListPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _AnimalListPageState createState() => _AnimalListPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _AnimalListPageState extends State<AnimalListPage> {
-  List<Animal> animals = [];
+class _HomePageState extends State<HomePage> {
+  List<Hewan> daftarHewan = [];
 
-  void addAnimal(Animal animal) {
+  // Fungsi untuk menambahkan hewan
+  void _addHewan(Hewan hewan) {
     setState(() {
-      animals.add(animal);
-    });
-  }
-
-  void updateAnimal(int index, Animal updatedAnimal) {
-    setState(() {
-      animals[index] = updatedAnimal;
-    });
-  }
-
-  void deleteAnimal(int index) {
-    setState(() {
-      animals.removeAt(index);
+      daftarHewan.add(hewan);
     });
   }
 
@@ -49,48 +37,21 @@ class _AnimalListPageState extends State<AnimalListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Animal List'),
+        title: Text('Hewan Galeri'),
       ),
-      body: ListView.builder(
-        itemCount: animals.length,
-        itemBuilder: (context, index) {
-          final animal = animals[index];
-          return ListTile(
-            title: Text(animal.name),
-            subtitle: Text(animal.scientificName),
-            leading: Image.asset(animal.image),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => deleteAnimal(index),
-            ),
-            onTap: () {
-              // Membuka halaman AddAnimalPage dengan data yang ada
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddAnimalPage(
-                    onAddAnimal: (animal) => addAnimal(animal),
-                    animalToEdit: animal, // Mengirim data yang ingin diedit
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+      body: DaftarHewanPage(daftarHewan: daftarHewan),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Navigasi ke halaman tambah hewan
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddAnimalPage(
-                onAddAnimal: (animal) => addAnimal(animal),
-                animalToEdit: null, // Tidak ada data untuk diedit
-              ),
+              builder: (context) => TambahHewanPage(onAddHewan: _addHewan),
             ),
           );
         },
         child: Icon(Icons.add),
+        backgroundColor: Colors.green,
       ),
     );
   }
